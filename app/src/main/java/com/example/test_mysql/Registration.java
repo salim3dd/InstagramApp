@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -24,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +51,8 @@ public class Registration extends AppCompatActivity {
     Button BTN_Reg;
     private ImageView imageView_avatar;
     private String User_name = "", User_Email = "", User_Password = "";
+
+    private String deviceID="";
 
     private Boolean Add_AVATAR = false;
     private ProgressDialog progressDialog;
@@ -107,6 +109,7 @@ public class Registration extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HardwareIds")
     void Registration() {
 
         User_name = ETXT_User_Name.getText().toString().trim();
@@ -142,6 +145,7 @@ public class Registration extends AppCompatActivity {
 
             } else {
 
+                deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 Bitmap Bimg = ((BitmapDrawable) imageView_avatar.getDrawable()).getBitmap();
                 Bitmap bitmap = getCroppedBitmap(Bimg);
@@ -199,7 +203,11 @@ public class Registration extends AppCompatActivity {
                                 Toast.makeText(Registration.this, "عذرا حدث خطأ لم يتم إرسال البيانات", Toast.LENGTH_SHORT).show();
 
                                 BTN_Reg.setEnabled(true);
+
+                            }else if (success.contains("UserBlock")) {
+                                Toast.makeText(Registration.this, "تم حظر الحساب", Toast.LENGTH_SHORT).show();
                             }
+
 
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
@@ -216,6 +224,7 @@ public class Registration extends AppCompatActivity {
                         User_name,
                         User_Email,
                         User_Password,
+                        deviceID,
                         ImgCode_Avatar,
                         responseLisener);
 

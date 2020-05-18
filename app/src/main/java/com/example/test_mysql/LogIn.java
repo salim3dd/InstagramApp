@@ -2,11 +2,13 @@ package com.example.test_mysql;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -35,7 +37,7 @@ public class LogIn extends AppCompatActivity {
     private String User_name = "", User_Password = "";
 
     private ProgressDialog progressDialog;
-
+    private String deviceID="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class LogIn extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HardwareIds")
     void LogIn() {
 
         User_name = ETXT_User_Name.getText().toString().trim();
@@ -64,6 +67,8 @@ public class LogIn extends AppCompatActivity {
         progressDialog.setMessage("انتظر ارسال البيانات");
         progressDialog.setCancelable(true);
         progressDialog.show();
+
+        deviceID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         final RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -107,14 +112,13 @@ public class LogIn extends AppCompatActivity {
                         MainActivity.UserEmail = Email.trim();
                         MainActivity.UserAvatar = Avatar_img.trim();
 
-                        Log.d("UserKey==========>",UserKey);
-
                         startActivity(new Intent(LogIn.this, User_Profile.class));
 
-                    }
-                    if (success.contains("Error")) {
-                        Toast.makeText(LogIn.this, "خطأ في البيانات", Toast.LENGTH_SHORT).show();
+                    }else if (success.contains("UserBlock")) {
+                        Toast.makeText(LogIn.this, "تم حظر الحساب", Toast.LENGTH_SHORT).show();
 
+                    }else if (success.contains("Error")) {
+                        Toast.makeText(LogIn.this, "خطأ في البيانات", Toast.LENGTH_SHORT).show();
                     }
 
                     if (progressDialog.isShowing()) {
@@ -138,6 +142,7 @@ public class LogIn extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("UserName", User_name);
                 params.put("PassWord", User_Password);
+                params.put("DeviceID", deviceID);
                 return params;
             }
         };

@@ -17,6 +17,7 @@ public class Send_Data_Registration extends StringRequest {
             String UserName,
             String UserEmail,
             String UserPassWord,
+            String deviceID,
             String UserAvatar,
 
             Response.Listener<String> listener) {
@@ -26,6 +27,7 @@ public class Send_Data_Registration extends StringRequest {
         MapData.put("UserName", UserName);
         MapData.put("Email", UserEmail);
         MapData.put("Password", UserPassWord);
+        MapData.put("DeviceID", deviceID);
         MapData.put("ImgCode_Avatar", UserAvatar);
 
     }

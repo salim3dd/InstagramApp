@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         shared_getData = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
        findViewById(R.id.BTN_Show_Data).setOnClickListener(new View.OnClickListener() {
