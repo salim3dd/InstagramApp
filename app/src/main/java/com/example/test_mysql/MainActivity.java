@@ -10,7 +10,7 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-     public static String Main_Link = "https://novbook.net/test/android/";
+    public static String Main_Link = "https://....../test/android/";
 
      public static String Local_UserKey , Local_UserName, Local_UserEmail, Local_UserAvatar;
 
@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
 
         shared_getData = getSharedPreferences("UserData", Context.MODE_PRIVATE);
